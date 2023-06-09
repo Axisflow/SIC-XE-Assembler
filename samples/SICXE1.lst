@@ -1,0 +1,41 @@
+         5	         0	      FIBO	     START	         0	          
+        10	         0	     FIRST	       LDT	        #1	    750001
+        15	         3	          	       LDS	       #10	    6D000A
+        20	         6	          	     +JSUB	     RDREC	  4B100011
+        25	         A	          	     +JSUB	     WRREC	  4B10002D
+        30	         E	    LENGTH	      RESW	         1	          
+        35	          	.
+        40	          	. SUBROUTINE RDREC
+        45	          	.
+        50	        11	     RDREC	     CLEAR	         A	      B400
+        55	        13	     RLOOP	        TD	     INPUT	    E32016
+        60	        16	          	       JEQ	     RLOOP	    332FFA
+        65	        19	          	        RD	     INPUT	    DB2010
+        70	        1C	          	     COMPR	       A,T	      A005
+        75	        1E	          	       JLT	     RLOOP	    3B2FF2
+        80	        21	          	     COMPR	       A,S	      A004
+        85	        23	          	       JGT	     RLOOP	    372FED
+        90	        26	          	       STA	    LENGTH	    0F2FE5
+        95	        29	          	      RSUB	          	    4F0000
+       100	        2C	     INPUT	      BYTE	     X'F1'	        F1
+       105	          	.
+       110	          	.SUBROUTINE WDREC
+       115	          	.
+       120	        2D	     WRREC	       LDX	        #0	    050000
+       125	        30	          	       LDS	        #1	    6D0001
+       130	        33	          	       LDA	        #0	    010000
+       135	        36	          	       LDT	    LENGTH	    772FD5
+       140	        39	     WLOOP	        TD	    OUTPUT	    E32019
+       145	        3C	          	       JEQ	     WLOOP	    332FFA
+       150	        3F	          	        WD	    OUTPUT	    DF2013
+       155	        42	          	      ADDR	       S,A	      9040
+       160	        44	          	       STA	    VALUE1	    0F200F
+       165	        47	          	       STS	    VALUE2	    7F200F
+       170	        4A	          	       LDA	    VALUE2	    03200C
+       175	        4D	          	       LDS	    VALUE1	    6F2006
+       180	        50	          	      TIXR	         T	      B850
+       185	        52	          	       JLT	     WLOOP	    3B2FE4
+       190	        55	    OUTPUT	      BYTE	     X'05'	        05
+       195	        56	    VALUE1	      RESW	         1	          
+       200	        59	    VALUE2	      RESW	         1	          
+       205	          	          	       END	     FIRST	          

@@ -1,0 +1,41 @@
+         5	         0	      FIBO	     START	         0
+        10	         0	     FIRST	       LDT	        #1
+        15	         3	          	       LDS	       #10
+        20	         6	          	     +JSUB	     RDREC
+        25	         A	          	     +JSUB	     WRREC
+        30	         E	    LENGTH	      RESW	         1
+        35	          	.
+        40	          	. SUBROUTINE RDREC
+        45	          	.
+        50	        11	     RDREC	     CLEAR	         A
+        55	        13	     RLOOP	        TD	     INPUT
+        60	        16	          	       JEQ	     RLOOP
+        65	        19	          	        RD	     INPUT
+        70	        1C	          	     COMPR	       A,T
+        75	        1E	          	       JLT	     RLOOP
+        80	        21	          	     COMPR	       A,S
+        85	        23	          	       JGT	     RLOOP
+        90	        26	          	       STA	    LENGTH
+        95	        29	          	      RSUB	          
+       100	        2C	     INPUT	      BYTE	     X'F1'
+       105	          	.
+       110	          	.SUBROUTINE WDREC
+       115	          	.
+       120	        2D	     WRREC	       LDX	        #0
+       125	        30	          	       LDS	        #1
+       130	        33	          	       LDA	        #0
+       135	        36	          	       LDT	    LENGTH
+       140	        39	     WLOOP	        TD	    OUTPUT
+       145	        3C	          	       JEQ	     WLOOP
+       150	        3F	          	        WD	    OUTPUT
+       155	        42	          	      ADDR	       S,A
+       160	        44	          	       STA	    VALUE1
+       165	        47	          	       STS	    VALUE2
+       170	        4A	          	       LDA	    VALUE2
+       175	        4D	          	       LDS	    VALUE1
+       180	        50	          	      TIXR	         T
+       185	        52	          	       JLT	     WLOOP
+       190	        55	    OUTPUT	      BYTE	     X'05'
+       195	        56	    VALUE1	      RESW	         1
+       200	        59	    VALUE2	      RESW	         1
+       205	          	          	       END	     FIRST
