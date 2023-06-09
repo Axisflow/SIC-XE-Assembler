@@ -1,0 +1,46 @@
+         5	         0	      COPY	     START	         0
+        10	         0	     FIRST	       STL	    RETADR
+        15	         3	          	       LDB	   #LENGTH
+        20	          	          	      BASE	    LENGTH
+        25	         6	     CLOOP	     +JSUB	     RDREC
+        30	         A	          	       LDA	    LENGTH
+        35	         D	          	      COMP	        #0
+        40	        10	          	       JEQ	    ENDFIL
+        45	        13	          	     +JSUB	     WRREC
+        50	        17	          	         J	     CLOOP
+        55	        1A	    ENDFIL	       LDA	       EOF
+        60	        1D	          	       STA	    BUFFER
+        65	        20	          	       LDA	        #3
+        70	        23	          	       STA	    LENGTH
+        75	        26	          	     +JSUB	     WRREC
+        80	        2A	          	         J	   @RETADR
+        85	        2D	       EOF	      BYTE	    C'EOF'
+        90	        30	    RETADR	      RESW	         1
+        95	        33	    LENGTH	      RESW	         1
+       100	        36	    BUFFER	      RESB	      4096
+       105	      1036	     RDREC	     CLEAR	         X
+       110	      1038	          	     CLEAR	         A
+       115	      103A	          	     CLEAR	         S
+       120	      103C	          	      +LDT	     #4096
+       125	      1040	     RLOOP	        TD	     INPUT
+       130	      1043	          	       JEQ	     RLOOP
+       135	      1046	          	        RD	     INPUT
+       140	      1049	          	     COMPR	       A,S
+       145	      104B	          	       JEQ	      EXIT
+       150	      104E	          	      STCH	  BUFFER,X
+       155	      1051	          	      TIXR	         T
+       160	      1053	          	       JLT	     RLOOP
+       165	      1056	      EXIT	       STX	    LENGTH
+       170	      1059	          	      RSUB	          
+       175	      105C	     INPUT	      BYTE	     X'F1'
+       180	      105D	     WRREC	     CLEAR	         X
+       185	      105F	          	       LDT	    LENGTH
+       190	      1062	     WLOOP	        TD	    OUTPUT
+       195	      1065	          	       JEQ	     WLOOP
+       200	      1068	          	      LDCH	  BUFFER,X
+       205	      106B	          	        WD	    OUTPUT
+       210	      106E	          	      TIXR	         T
+       215	      1070	          	       JLT	     WLOOP
+       220	      1073	          	      RSUB	          
+       225	      1076	    OUTPUT	      BYTE	     X'05'
+       230	          	          	       END	     FIRST
