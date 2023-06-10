@@ -14,33 +14,39 @@
         70	        23	          	       STA	    LENGTH
         75	        26	          	     +JSUB	     WRREC
         80	        2A	          	         J	   @RETADR
-        85	        2D	       EOF	      BYTE	    C'EOF'
+        85	        2D	       EOF	      WORD	   4542278
         90	        30	    RETADR	      RESW	         1
         95	        33	    LENGTH	      RESW	         1
        100	        36	    BUFFER	      RESB	      4096
-       105	      1036	     RDREC	     CLEAR	         X
-       110	      1038	          	     CLEAR	         A
-       115	      103A	          	     CLEAR	         S
-       120	      103C	          	      +LDT	     #4096
-       125	      1040	     RLOOP	        TD	     INPUT
-       130	      1043	          	       JEQ	     RLOOP
-       135	      1046	          	        RD	     INPUT
-       140	      1049	          	     COMPR	       A,S
-       145	      104B	          	       JEQ	      EXIT
-       150	      104E	          	      STCH	  BUFFER,X
-       155	      1051	          	      TIXR	         T
-       160	      1053	          	       JLT	     RLOOP
-       165	      1056	      EXIT	       STX	    LENGTH
-       170	      1059	          	      RSUB	          
-       175	      105C	     INPUT	      BYTE	     X'F1'
-       180	      105D	     WRREC	     CLEAR	         X
-       185	      105F	          	       LDT	    LENGTH
-       190	      1062	     WLOOP	        TD	    OUTPUT
-       195	      1065	          	       JEQ	     WLOOP
-       200	      1068	          	      LDCH	  BUFFER,X
-       205	      106B	          	        WD	    OUTPUT
-       210	      106E	          	      TIXR	         T
-       215	      1070	          	       JLT	     WLOOP
-       220	      1073	          	      RSUB	          
-       225	      1076	    OUTPUT	      BYTE	     X'05'
-       230	          	          	       END	     FIRST
+       105	          	.
+       110	          	. SUBROUTINE TO READ RECORD INTO BUFFER
+       115	          	.
+       120	      1036	     RDREC	     CLEAR	         X
+       125	      1038	          	     CLEAR	         A
+       130	      103A	          	     CLEAR	         S
+       135	      103C	          	      +LDT	     #4096
+       140	      1040	     RLOOP	        TD	     INPUT
+       145	      1043	          	       JEQ	     RLOOP
+       150	      1046	          	        RD	     INPUT
+       155	      1049	          	     COMPR	       A,S
+       160	      104B	          	       JEQ	      EXIT
+       165	      104E	          	      STCH	  BUFFER,X
+       170	      1051	          	      TIXR	         T
+       175	      1053	          	       JLT	     RLOOP
+       180	      1056	      EXIT	       STX	    LENGTH
+       185	      1059	          	      RSUB	          
+       190	      105C	     INPUT	      BYTE	     x'F1'
+       195	          	.
+       200	          	. SUBROUTINE TO WRITE RECORD FROM BUFFER
+       205	          	.
+       210	      105D	     WRREC	     CLEAR	         X
+       215	      105F	          	       LDT	    LENGTH
+       220	      1062	     WLOOP	        TD	    OUTPUT
+       225	      1065	          	       JEQ	     WLOOP
+       230	      1068	          	      LDCH	  BUFFER,X
+       235	      106B	          	        WD	    OUTPUT
+       240	      106E	          	      TIXR	         T
+       245	      1070	          	       JLT	     WLOOP
+       250	      1073	          	      RSUB	          
+       255	      1076	    OUTPUT	      BYTE	     x'05'
+       260	          	          	       END	     FIRST
